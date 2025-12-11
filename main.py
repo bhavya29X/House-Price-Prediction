@@ -88,15 +88,21 @@ else:
     print("Inference is complete, results saved to output.csv Enjoy!")
     
     
-    from sklearn.metrics import mean_squared_error
+    from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
     mse = mean_squared_error(true_labels, predictions)
     rmse = np.sqrt(mse)
+    mae = mean_absolute_error(true_labels, predictions)
+    r2 = r2_score(true_labels, predictions)
+    
     print(f"\nModel Error (RMSE): {rmse:.2f}")
+    print(f"Mean Absolute Error (MAE): {mae:.2f}")
+    print(f"R^2 score: {r2:.4f}")
     # -----------------------------------------
 
     input_data["predicted_value"] = predictions
 
     input_data.to_csv("output.csv", index=False)
     print("Inference is complete, results saved to output.csv Enjoy!")
+
 
 
