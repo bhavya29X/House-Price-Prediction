@@ -76,19 +76,18 @@ else:
 
     input_data = pd.read_csv("input.csv")
     
-    # Separate true labels (actual values on test set)
+     # Separate true labels (actual values on test set)
     true_labels = input_data["median_house_value"].copy()
 
     test_features = input_data.drop("median_house_value", axis=1)
     
     transformed_input = pipeline.transform(input_data)
     predictions = model.predict(transformed_input)
-    
 
     input_data.to_csv("output.csv", index=False)
     print("Inference is complete, results saved to output.csv Enjoy!")
-
-
+    
+    
     from sklearn.metrics import mean_squared_error
     mse = mean_squared_error(true_labels, predictions)
     rmse = np.sqrt(mse)
