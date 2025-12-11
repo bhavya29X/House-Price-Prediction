@@ -49,17 +49,20 @@ if not os.path.exists(MODEL_FILE):
     split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
 
     for train_index, test_index in split.split(housing, housing["income_cat"]):
+        # Save the test dataset as input.csv
         housing.loc[test_index].drop("income_cat", axis=1).to_csv(
             "input.csv", index=False
         )
         housing = housing.loc[train_index].drop("income_cat", axis=1)
 
+     # Separate features and labels
     housing_labels = housing["median_house_value"].copy()
     housing_features = housing.drop("median_house_value", axis=1)
 
     num_attribs = housing_features.drop("ocean_proximity", axis=1).columns.tolist()
     cat_attribs = ["ocean_proximity"]
 
+    # Build pipeline and train
     pipeline = build_pipeline(num_attribs, cat_attribs)
     housing_prepared = pipeline.fit_transform(housing_features)
 
@@ -89,14 +92,15 @@ else:
     input_data.to_csv("output.csv", index=False)
     print("Inference is complete, results saved to output.csv Enjoy!")
 
+    # ---------- Calculate error ----------
 
     from sklearn.metrics import mean_squared_error
     mse = mean_squared_error(true_labels, predictions)
     rmse = np.sqrt(mse)
     print(f"\nModel Error (RMSE): {rmse:.2f}")
-    # -----------------------------------------
 
     input_data["predicted_value"] = predictions
 
     input_data.to_csv("output.csv", index=False)
     print("Inference is complete, results saved to output.csv Enjoy!")
+
